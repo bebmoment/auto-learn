@@ -5,6 +5,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -33,8 +37,16 @@ public class DriveSubsystem extends SubsystemBase {
   private final PIDController turnController = new PIDController(DriveConstants.TURN_KP, DriveConstants.TURN_KI,
       DriveConstants.TURN_KD);
 
-  private final AHRS gyro = new AHRS(SPI.Port.kMXP);
+  private final PIDController leftPID = new PIDController(DriveConstants.leftKP, DriveConstants.leftKI, DriveConstants.leftKD);
+  private final PIDController rightPID = new PIDController(DriveConstants.rightKP, DriveConstants.rightKI, DriveConstants.rightKD);
+
+  private final DifferentialDriveKinematics differentialDriveKinematics = new DifferentialDriveKinematics(DriveConstants.kTrackWidth); // added DifferentialDriveKinematics
+  private final SimpleMotorFeedforward ff = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV, DriveConstants.kA);
+
   private final Encoder encoderLeftDrive = new Encoder(DriveConstants.LEFT_ENCODER_A, DriveConstants.LEFT_ENCODER_B);
+  private final Encoder encoderRightDrive = new Encoder(DriveConstants.RIGHT_ENCODER_A, DriveConstants.RIGHT_ENCODER_B); // need to add the physical encoder
+
+  private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
   public double getEncoderDrivePosition() {
     return (encoderLeftDrive.getDistance());
@@ -66,7 +78,23 @@ public class DriveSubsystem extends SubsystemBase {
 
   public boolean atSetpoint() {
     return (turnController.atSetpoint());
+  } 
+
+  // integrating controls
+  public void kDrive(double kVx, double kVy, double kAngularSpeed){ // kVx = linear velocity in x-axis(forward) kVy = linear velocity in y-axis(sideways)
+    var wheelSpeeds = differentialDriveKinematics.toWheelSpeeds(new ChassisSpeeds(kVx, kVy, kAngularSpeed));
+    setSpeeds(wheelSpeeds);
   }
+
+  public void setSpeeds(DifferentialDriveWheelSpeeds wheelSpeeds){
+
+    double leftVelocity = wheelSpeeds.leftMetersPerSecond;
+    double rightVelocity = wheelSpeeds.rightMetersPerSecond;
+
+    driveLeft.setVoltage(ff.calculate(leftVelocity) + leftPID.calculate(encoderLeftDrive.getRate(), leftVelocity));
+    driveRight.setVoltage(ff.calculate(rightVelocity) + rightPID.calculate(encoderRightDrive.getRate(), rightVelocity));
+  }
+  //
 
   public DriveSubsystem() {
     driveFrontLeft.setNeutralMode(NeutralMode.Brake);
@@ -93,4 +121,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void setMotor(double forwardSpeed, double turnSpeed) {
     driveRobot.arcadeDrive(forwardSpeed, turnSpeed);
   }
+
+  
+
 }

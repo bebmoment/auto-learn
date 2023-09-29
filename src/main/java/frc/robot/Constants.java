@@ -28,12 +28,28 @@ public final class Constants {
   }
 
   public static class DriveConstants {
+
+    public static final double kTrackWidth = 0.7;
+    public static final double kS = 1;
+    public static final double kV = 3;
+    public static final double kA = 1;
+
+    public static final double leftKP = 1;
+    public static final double leftKI = 0;
+    public static final double leftKD = 1;
+
+    public static final double rightKP = 1;
+    public static final double rightKI = 0;
+    public static final double rightKD = 1;
+    
     public static final int DRIVE_FRONT_LEFT = 2;
     public static final int DRIVE_FRONT_RIGHT = 4;
     public static final int DRIVE_BACK_LEFT = 3;
     public static final int DRIVE_BACK_RIGHT = 5;
     public static final int LEFT_ENCODER_A = 1;
     public static final int LEFT_ENCODER_B = 2;
+    public static final int RIGHT_ENCODER_A = 3;
+    public static final int RIGHT_ENCODER_B = 4;
     public static final int DRIVE_AXIS = 1;
     public static final int TURN_AXIS = 4;
     public static final double TURN_PROPORTION = 0.7;
