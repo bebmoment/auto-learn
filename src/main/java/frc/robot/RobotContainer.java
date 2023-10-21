@@ -19,6 +19,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PCMSubsystem;
 import frc.robot.subsystems.RotationSubsystem;
 import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.ElevatorPIDCommand;
 import frc.robot.commands.EnableCompressorCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.RotationCommand;
@@ -31,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -83,6 +85,7 @@ public class RobotContainer {
 
                 // Put the chooser on the dashboard
                 Shuffleboard.getTab("Autonomous").add(chooser);
+                SmartDashboard.putData("Elevator", elevatorSubsystem.getElevatorController());
         }
 
         private void configureBindings() {
@@ -93,6 +96,9 @@ public class RobotContainer {
                 new JoystickButton(operatorController, ElevatorConstants.ELEVATOR_DOWN_BUTTON)
                                 .whileTrue(new ElevatorCommand(elevatorSubsystem,
                                                 ElevatorConstants.ELEVATOR_DOWN_SPEED));
+                new JoystickButton(operatorController, ElevatorConstants.ELEVATOR_PID_BUTTON) // Binding button to ElevatorPIDCommand
+                                .onTrue(new ElevatorPIDCommand(elevatorSubsystem,  // include elevatorSubsystem
+                                                ElevatorConstants.ELEVATOR_PID_POSITION)); // include elevator setpoint
 
                 // Rotation
                 new JoystickButton(operatorController, RotationConstants.ROTATION_RETRACT_BUTTON)

@@ -6,9 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -48,8 +46,12 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
-  public double getEncoderDrivePosition() {
+  public double getEncoderDistance() {
     return (encoderLeftDrive.getDistance());
+  }
+
+  public double getRightEncoderDistance(){
+    return(encoderRightDrive.getDistance());
   }
 
   public double getGyroYaw() {
@@ -80,21 +82,6 @@ public class DriveSubsystem extends SubsystemBase {
     return (turnController.atSetpoint());
   } 
 
-  // integrating controls
-  public void kDrive(double kVx, double kVy, double kAngularSpeed){ // kVx = linear velocity in x-axis(forward) kVy = linear velocity in y-axis(sideways)
-    var wheelSpeeds = differentialDriveKinematics.toWheelSpeeds(new ChassisSpeeds(kVx, kVy, kAngularSpeed));
-    setSpeeds(wheelSpeeds);
-  }
-
-  public void setSpeeds(DifferentialDriveWheelSpeeds wheelSpeeds){
-
-    double leftVelocity = wheelSpeeds.leftMetersPerSecond;
-    double rightVelocity = wheelSpeeds.rightMetersPerSecond;
-
-    driveLeft.setVoltage(ff.calculate(leftVelocity) + leftPID.calculate(encoderLeftDrive.getRate(), leftVelocity));
-    driveRight.setVoltage(ff.calculate(rightVelocity) + rightPID.calculate(encoderRightDrive.getRate(), rightVelocity));
-  }
-  //
 
   public DriveSubsystem() {
     driveFrontLeft.setNeutralMode(NeutralMode.Brake);
@@ -113,6 +100,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Pitch", getGyroPitch());
     SmartDashboard.putNumber("Yaw", getGyroYaw());
     SmartDashboard.putNumber("Encoder Left Distance", encoderLeftDrive.getDistance());
+    SmartDashboard.putNumber("Encoder Right Distance", encoderRightDrive.getDistance());
     SmartDashboard.putNumber("PID Right Turn Speed", turnController.calculate(getGyroYaw(), 90));
     SmartDashboard.putNumber("PID Left Turn Speed", turnController.calculate(getGyroYaw(), -90));
 

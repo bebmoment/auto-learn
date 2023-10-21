@@ -41,6 +41,6 @@ public class DriveEncoderCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driveSubsystem.getEncoderDrivePosition() < distance;
+    return driveSubsystem.getEncoderDistance() < distance;
   }
 }

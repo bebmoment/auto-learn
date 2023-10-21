@@ -106,12 +106,12 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
   }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
+    CommandScheduler.getInstance().run();
   }
 
   /** This function is called once when the robot is first started up. */

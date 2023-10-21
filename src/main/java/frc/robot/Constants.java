@@ -46,10 +46,10 @@ public final class Constants {
     public static final int DRIVE_FRONT_RIGHT = 4;
     public static final int DRIVE_BACK_LEFT = 3;
     public static final int DRIVE_BACK_RIGHT = 5;
-    public static final int LEFT_ENCODER_A = 1;
-    public static final int LEFT_ENCODER_B = 2;
-    public static final int RIGHT_ENCODER_A = 3;
-    public static final int RIGHT_ENCODER_B = 4;
+    public static final int LEFT_ENCODER_A = 2;
+    public static final int LEFT_ENCODER_B = 3;
+    public static final int RIGHT_ENCODER_A = 4;
+    public static final int RIGHT_ENCODER_B = 5;
     public static final int DRIVE_AXIS = 1;
     public static final int TURN_AXIS = 4;
     public static final double TURN_PROPORTION = 0.7;
@@ -69,10 +69,15 @@ public final class Constants {
     public static final int ELEVATOR_RIGHT = 6;
     public static final int ELEVATOR_UP_BUTTON = 4;
     public static final int ELEVATOR_DOWN_BUTTON = 2;
+    public static final int ELEVATOR_PID_BUTTON = 11;
     public static final double ELEVATOR_UP_SPEED = -0.2;
     public static final double ELEVATOR_DOWN_SPEED = 0.1;
     public static final double ELEVATOR_STALL_SPEED = -0.03;
     public static final double ELEVATOR_ENCODER_MAX = 0; // Encoder Value When Elevator is at Top
+    public static final double TURN_KP = 0.10;
+    public static final double TURN_KI = 0.0;
+    public static final double TURN_KD = 0.0;
+    public static final double ELEVATOR_PID_POSITION = -13.9;
   }
 
   public static class IntakeConstants {
