@@ -52,4 +52,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevator.set(speed);
   }
 
+  public void setVoltage(double voltage){
+    elevator.setVoltage(voltage);
+  }
+
 }

@@ -29,13 +29,13 @@ public class ElevatorPIDCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevatorSubsystem.setMotor(elevatorSubsystem.getElevatorControllerSpeed(setpoint)); // calls the .setMotor() command, with the PID's calculated speed as the parameter
+    elevatorSubsystem.setVoltage(elevatorSubsystem.getElevatorControllerSpeed(setpoint)); // calls the .setMotor() command, with the PID's calculated speed as the parameter
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorSubsystem.setMotor(ElevatorConstants.ELEVATOR_STALL_SPEED); // set a stall speed for the elevator once the command ends, to work against gravity
+    elevatorSubsystem.setVoltage(ElevatorConstants.ELEVATOR_STALL_SPEED); // set a stall speed for the elevator once the command ends, to work against gravity
   }
 
   // Returns true when the command should end.

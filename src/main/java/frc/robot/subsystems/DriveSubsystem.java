@@ -20,6 +20,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
@@ -46,6 +47,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
+  SlewRateLimiter filter = new SlewRateLimiter(0.38);
+
+  
   public double getEncoderDistance() {
     return (encoderLeftDrive.getDistance());
   }
@@ -107,7 +111,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setMotor(double forwardSpeed, double turnSpeed) {
-    driveRobot.arcadeDrive(forwardSpeed, turnSpeed);
+    driveRobot.arcadeDrive(filter.calculate(forwardSpeed), turnSpeed);
   }
 
   
