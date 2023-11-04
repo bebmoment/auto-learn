@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.PIDController;
 // import edu.wpi.first.wpilibj.DigitalInput;
 // import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,6 +18,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   /** Creates a new ElevatorSubsystem. */
   private final CANSparkMax elevator = new CANSparkMax(ElevatorConstants.ELEVATOR_RIGHT, MotorType.kBrushless);
   private final RelativeEncoder encoderElevator = elevator.getEncoder();
+  private final PIDController elevatorController = new PIDController(ElevatorConstants.TURN_KP, ElevatorConstants.TURN_KI,
+  ElevatorConstants.TURN_KD);
 
   public double getEncoderElevatorPosition() {
     return (encoderElevator.getPosition());
@@ -26,6 +29,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     return encoderElevator.getPosition() >= ElevatorConstants.ELEVATOR_ENCODER_MAX;
   }
 
+  public double getElevatorControllerSpeed(double setpoint) { // takes the desired setpoint as a parameter
+    return (elevatorController.calculate(getEncoderElevatorPosition(), setpoint)); // returns the elevator speed calculated by the PID
+  }
+
   public ElevatorSubsystem() {
     elevator.setInverted(true);
   }
@@ -33,6 +40,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Elevator Right Encoder", getEncoderElevatorPosition());
+    SmartDashboard.putNumber("Elevator PID Speed", elevatorController.calculate(getEncoderElevatorPosition(), -11.73)); // displays currently calculated elevator speed
     // This method will be called once per scheduler run
   }
 

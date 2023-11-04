@@ -21,6 +21,7 @@ import frc.robot.subsystems.PCMSubsystem;
 import frc.robot.subsystems.RotationSubsystem;
 import frc.robot.subsystems.Stopwatch;
 import frc.robot.commands.ElevatorCommand;
+import frc.robot.commands.ElevatorPIDCommand;
 import frc.robot.commands.EnableCompressorCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.RotationCommand;
@@ -96,6 +97,9 @@ public class RobotContainer {
                 new JoystickButton(operatorController, ElevatorConstants.ELEVATOR_DOWN_BUTTON)
                                 .whileTrue(new ElevatorCommand(elevatorSubsystem,
                                                 ElevatorConstants.ELEVATOR_DOWN_SPEED));
+                new JoystickButton(operatorController, ElevatorConstants.ELEVATOR_PID_BUTTON) // Binding button to ElevatorPIDCommand
+                                .onTrue(new ElevatorPIDCommand(elevatorSubsystem,  // include elevatorSubsystem
+                                                ElevatorConstants.ELEVATOR_PID_POSITION)); // include elevator setpoint
 
                 // Rotation
                 new JoystickButton(operatorController, RotationConstants.ROTATION_RETRACT_BUTTON)

@@ -21,6 +21,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+
 
 public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
@@ -42,7 +44,10 @@ public class DriveSubsystem extends SubsystemBase {
   private final Field2d field = new Field2d();
   DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(gyro.getRotation2d(),
       encoderLeftDrive.getDistance(), encoderRightDrive.getDistance());
+
   Pose2d pose;
+
+  SlewRateLimiter filter = new SlewRateLimiter(3.8);
 
   public double getEncoderDrivePosition() {
     return (encoderLeftDrive.getDistance());
@@ -85,6 +90,7 @@ public class DriveSubsystem extends SubsystemBase {
     turnController.setTolerance(DriveConstants.TURN_CONTROLLER_POSITION_TOLERANCE,
         DriveConstants.TURN_CONTROLLER_VELOCITY_TOLERANCE);
     SmartDashboard.putData("Field", field);
+    
   }
 
   @Override
@@ -101,6 +107,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setMotor(double forwardSpeed, double turnSpeed) {
-    driveRobot.arcadeDrive(forwardSpeed, turnSpeed);
+    System.out.println(filter.calculate(forwardSpeed));
+    driveRobot.arcadeDrive(filter.calculate(forwardSpeed), turnSpeed);
   }
 }
