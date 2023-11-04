@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 // import edu.wpi.first.wpilibj.DigitalInput;
 // import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -20,6 +21,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final RelativeEncoder encoderElevator = elevator.getEncoder();
   private final PIDController elevatorController = new PIDController(ElevatorConstants.TURN_KP, ElevatorConstants.TURN_KI,
   ElevatorConstants.TURN_KD);
+  private final ElevatorFeedforward feedforward = new ElevatorFeedforward(ElevatorConstants.KS, ElevatorConstants.KG, ElevatorConstants.KV, ElevatorConstants.KA);
 
   public double getEncoderElevatorPosition() {
     return (encoderElevator.getPosition());
