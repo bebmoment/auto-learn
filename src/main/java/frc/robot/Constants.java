@@ -68,6 +68,7 @@ public final class Constants {
     public static final double KG = -0.63366;
     public static final double KV = 0.10275;
     public static final double KA = 0.023827;
+    public static final double DESIRED_VELOCITY = 14.0;
   }
 
   public static class IntakeConstants {
