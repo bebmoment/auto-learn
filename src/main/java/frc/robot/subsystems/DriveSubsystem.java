@@ -107,7 +107,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setMotor(double forwardSpeed, double turnSpeed) {
-    System.out.println(filter.calculate(forwardSpeed));
     driveRobot.arcadeDrive(filter.calculate(forwardSpeed), turnSpeed);
   }
 }

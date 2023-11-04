@@ -42,7 +42,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Elevator Right Encoder", getEncoderElevatorPosition());
-    SmartDashboard.putNumber("Elevator Controller Speed", getElevatorControllerSpeed(getEncoderElevatorPosition())); // displays currently calculated elevator speed
+    SmartDashboard.putNumber("Elevator Controller Speed", getElevatorControllerSpeed(ElevatorConstants.ELEVATOR_PID_POSITION)); // displays currently calculated elevator speed
+    SmartDashboard.putNumber("Elevator PID", elevatorController.calculate(getEncoderElevatorPosition(), ElevatorConstants.ELEVATOR_PID_POSITION));
+    SmartDashboard.putNumber("Feedforward", feedforward.calculate(ElevatorConstants.DESIRED_VELOCITY));
     // This method will be called once per scheduler run
   }
 
@@ -50,4 +52,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevator.set(speed);
   }
 
+  public void setVoltage(double speed) {
+    elevator.setVoltage(speed);
+  }
 }
