@@ -26,9 +26,9 @@ public class MyNewAutoCommand extends SequentialCommandGroup {
       new ParallelCommandGroup(
         new ElevatorCommand(elevatorSubsystem, ElevatorConstants.ELEVATOR_UP_SPEED).withTimeout(0.75),
         new RotationCommand(rotationSubsystem, true)
-        ),
-        new IntakeCommand(intakeSubsystem, true),
-        new RetractAutomation(rotationSubsystem, elevatorSubsystem, intakeSubsystem)
+        ).withTimeout(1.0),
+        new IntakeCommand(intakeSubsystem, true).withTimeout(2.0),
+        new RetractAutomation(rotationSubsystem, elevatorSubsystem, intakeSubsystem).withTimeout(2.0)
         // new ConeAutomation(rotationSubsystem, elevatorSubsystem),
         // new IntakeCommand(intakeSubsystem, true),
         // new ArcadeDriveCommand(driveSubsystem, () -> 0.0, () -> 0.6).withTimeout(3.0)
