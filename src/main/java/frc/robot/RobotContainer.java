@@ -34,6 +34,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
+import frc.robot.commands.MyNewAutoCommand;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -140,6 +142,6 @@ public class RobotContainer {
          */
         public Command getAutonomousCommand() {
                 // An example command will be run in autonomous
-                return chooser.getSelected();
+                return new MyNewAutoCommand(driveSubsystem, elevatorSubsystem, rotationSubsystem, intakeSubsystem);
         }
 }
